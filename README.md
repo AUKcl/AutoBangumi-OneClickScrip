@@ -14,7 +14,7 @@
     DS918
     ├── docker
     │   └── Bangumi
-    │       ├── AutoBangumi
+    │       ├── Autobangumi
     │       │   ├── config
     │       │   └── data
     │       └── qbittorrent

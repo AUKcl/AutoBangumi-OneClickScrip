@@ -22,17 +22,14 @@
 # 定义要更新的 Docker Compose 文件的路径
 COMPOSE_FILE="AutoBangumi.yml"
 
-# 输出步骤提示
 echo "Step 1: 停止容器"
-# 停止容器，不删除
+# 停止容器
 docker-compose -f $COMPOSE_FILE stop
 
-# 输出步骤提示
 echo "Step 2: 拉取最新容器镜像"
 # 拉取最新容器镜像
 docker-compose -f $COMPOSE_FILE pull
 
-# 输出步骤提示
 echo "Step 3: 重新启动容器"
 # 重新启动容器
 ./start_autobangumi.sh

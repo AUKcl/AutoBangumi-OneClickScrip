@@ -1,0 +1,65 @@
+#    AutoBangumi-OneClickScrip
+#    Deploy with one click for automatic tracking of anime, control container startup sequence, and quickly update containers. It primarily addresses the issue of slow qBittorrent startup after boot, which prevents AutoBangumi from accessing qBittorrent. The project is built on Synology DiskStation (DSM); for other platforms, please make modifications as needed based on your specific situation.
+#    Copyright (C) <2023>  <AUKcl>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#    
+#    AUKcl's email:kaixuan135@outloook.com
+
+version: '3.2'
+services:
+
+  qbittorrent:
+    image: johngong/qbittorrent:latest
+    container_name: qbittorrent-AutoBangumi
+    restart: unless-stopped
+    volumes:
+      - /volume1/docker/Bangumi/qBittorrent:/config #根据自己的目录修改
+    ports:
+      - "8989:8989"
+    environment:
+      - UID=1026
+      - GID=100
+      - UMASK=000
+      - TZ=Asia/Shanghai
+      - QB_WEBUI_PORT=8989
+      - QB_EE_BIN=false
+      - QB_TRACKERS_UPDATE_AUTO=true
+      - QB_TRACKERS_LIST_URL=https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+
+  AutoBangumi:
+    image: estrellaxd/auto_bangumi:latest
+    container_name: AutoBangumi
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+    volumes:
+      - /volume1/docker/Bangumi/Autobangumi/config:/app/config #根据自己的目录修改
+      - /volume1/docker/Bangumi/Autobangumi/data:/app/data #根据自己的目录修改
+    ports:
+      - "7892:7892"
+    environment:
+      - TZ=Asia/Shanghai
+      - PUID=1026
+      - PGID=100
+      - UMASK=000
+      - AB_DOWNLOADER_HOST=192.168.1.2:8989 #填写qbittorrent的webUI地址，本例中的qbittorrent使用Bridge网络，宿主机IP为192.168.1.2
+      - AB_DOWNLOADER_USERNAME=user #填写qbittorrent webUI登陆用户名
+      - AB_DOWNLOADER_PASSWORD=password #填写qbittorrent webUI登陆密码
+      - AB_INTERVAL_TIME=1800
+      - AB_METHOD=Advance
+      - AB_GROUP_TAG=True
+      - AB_NOT_CONTAIN=720,BIG5,JPTC,繁日双语,内嵌,合集
+      - AB_DOWNLOAD_PATH=/Downloads
+      - AB_DEBUG_MODE=True

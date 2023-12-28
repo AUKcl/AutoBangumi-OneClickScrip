@@ -19,19 +19,21 @@
 
 #!/bin/bash
 
-# 定义要更新的 Docker Compose 文件的路径
-COMPOSE_FILE="compose.yaml"
+# 定义 AutoBangumi 项目的路径
+mkdir -p /volume1/docker/Bangumi/Autobangumi/config
+mkdir -p /volume1/docker/Bangumi/Autobangumi/data
+mkdir -p /volume1/docker/Bangumi/qBittorrent
 
-echo "Step 1: 停止容器"
-# 停止容器
-docker-compose -f $COMPOSE_FILE stop
+# 下载默认docker-compose.yaml模板
+wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/blob/main/compose.yaml
 
-echo "Step 2: 拉取最新容器镜像"
-# 拉取最新容器镜像
-docker-compose -f $COMPOSE_FILE pull
+# 下载 AutoBangumi 项目启动脚本
+wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/blob/main/Scrip/start_autobangumi.sh
 
-echo "Step 3: 重新启动容器"
-# 重新启动容器
-./start_autobangumi.sh
+# 下载 AutoBangumi 项目更新脚本
+wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/blob/main/Scrip/update_autobangumi_containers.sh
 
-echo "容器已更新。"
+# 执行 AutoBangumi 项目启动脚本
+bash /volume1/docker/Bangumi/start_autobangumi.sh
+
+

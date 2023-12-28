@@ -20,7 +20,7 @@
 #!/bin/bash
 
 # 定义 Docker Compose 文件的路径
-COMPOSE_FILE="AutoBangumi.yml"
+COMPOSE_FILE="compose.yaml"
 
 # 定义 qbittorrent 容器的名称
 QB_CONTAINER="qbittorrent"
@@ -59,7 +59,18 @@ function wait_for_qbittorrent() {
 
 # 启动 qbittorrent 服务
 echo "启动 qbittorrent 服务..."
-docker-compose -f $COMPOSE_FILE up -d $QB_CONTAINER
+docker-compose -f $COMPOSE_FILE up -d --no-deps $QB_CONTAINER
+if [ $? -ne 0 ]; then
+  # 提取qbittorrent容器ID
+  QB_CONTAINER_ID=$(docker ps -aqf "name=$QB_CONTAINER")
+  if [ -n "$QB_CONTAINER_ID" ]; then
+    echo "检测到已创建qbittorrent，使用容器ID $QB_CONTAINER_ID 启动..."
+    docker start $QB_CONTAINER_ID
+  else
+    echo "无法解决容器名冲突。请手动处理。"
+    exit 1
+  fi
+fi
 
 # 检测 qbittorrent 可访问性
 echo "检测 qbittorrent 可访问性..."
@@ -67,6 +78,17 @@ wait_for_qbittorrent
 
 # 启动 AutoBangumi 服务
 echo "启动 AutoBangumi 服务..."
-docker-compose -f $COMPOSE_FILE up -d $AUTOBANGUMI_CONTAINER
+docker-compose -f $COMPOSE_FILE up -d --no-deps $AUTOBANGUMI_CONTAINER
+if [ $? -ne 0 ]; then
+  # 提取AutoBangumi容器ID
+  AUTOBANGUMI_CONTAINER_ID=$(docker ps -aqf "name=$AUTOBANGUMI_CONTAINER")
+  if [ -n "$AUTOBANGUMI_CONTAINER_ID" ]; then
+    echo "检测到已创建AutoBangumi，使用容器ID $AUTOBANGUMI_CONTAINER_ID 启动..."
+    docker start $AUTOBANGUMI_CONTAINER_ID
+  else
+    echo "无法解决容器名冲突。请手动处理。"
+    exit 1
+  fi
+fi
 
 echo "AutoBangumi 服务已启动。"

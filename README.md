@@ -59,7 +59,7 @@ sudo mkdir -p /volume1/docker/Bangumi && cd /volume1/docker/Bangumi && curl -L h
    cd /volume1/docker/Bangumi && docker-compose -f compose.yaml stop
    ```
 
-## 设置AutoBangumi.yml的容器定时更新
+## 设置compose.yaml的容器定时更新
 添加定时更新脚本，和前面添加开关机脚本基本一致，`触发的任务`改为`计划的任务`,选项多了一个`计划`，示例如下：
 ![计划](img/03.png)
 

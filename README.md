@@ -9,6 +9,10 @@
 # 搭建流程
 ## 群晖DSM7.2
 群晖套件中心安装`Container Manager`套件
+> 注意！！！
+> 群晖的Container Manager面板并不会显示我们通过命令行手动创建的项目，如果你通过面板创建了项目，甚至会和命令行产生冲突，提示此容器已创建，ID为xxxxx等，命令行也无法控制面板创建的项目，比如停止项目，移除项目等，一切操作必须通过面板执行
+> 你可以通过`/volume1/@appstore/ContainerManager/tool/synouserdata_docker`来查看当前用户管理的项目数量和web管理的项目数量，目前还没有办法解决此问题
+> 所以最好直接通过命令行来进行管理
 
 ## 群晖DSM7.1及以下版本
 ### Docker套件及容器目录

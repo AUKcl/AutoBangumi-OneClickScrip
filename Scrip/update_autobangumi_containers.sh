@@ -22,9 +22,9 @@
 # 定义要更新的 Docker Compose 文件的路径
 COMPOSE_FILE="compose.yaml"
 
-echo "Step 1: 停止容器"
+echo "Step 1: 移除旧容器"
 # 停止容器
-docker-compose -f $COMPOSE_FILE stop
+docker-compose -f $COMPOSE_FILE down
 
 echo "Step 2: 拉取最新容器镜像"
 # 拉取最新容器镜像

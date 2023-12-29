@@ -60,8 +60,13 @@ sudo mkdir -p /volume1/docker/Bangumi && cd /volume1/docker/Bangumi && wget http
    ```
 
 ## 设置compose.yaml的容器定时更新
-添加定时更新脚本，和前面添加开关机脚本基本一致，`触发的任务`改为`计划的任务`,选项多了一个`计划`，示例如下：
+1. 添加定时更新脚本，和前面添加开关机脚本基本一致，`触发的任务`改为`计划的任务`,选项多了一个`计划`，示例如下：
 ![计划](img/03.png)
+
+2. 用户自定义的脚本内容如下：
+    ```bash
+    cd /volume1/docker/appdata/DockerCompose/Bangumi && ./update_autobangumi_containers.sh
+    ```
 
 # End
 部署和控制到此结束，至于qbittorrent和AutoBangumi怎么使用我就不赘述了，具体可以查看官方文档；

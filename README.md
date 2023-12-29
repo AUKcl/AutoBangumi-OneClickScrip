@@ -48,7 +48,7 @@
 ## 部署AutoBangumi
 使用SSH命令行连接群晖后，输入如下命令一键部署AutoBangumi服务：
 ```bash
-sudo mkdir -p /volume1/docker/Bangumi && cd /volume1/docker/Bangumi && curl -L https://github.com/AUKcl/AutoBangumi-OneClickScrip/blob/main/Scrip/OneClickScrip.sh && chmod +x OneClickScrip.sh && ./OneClickScrip.sh
+sudo mkdir -p /volume1/docker/Bangumi && cd /volume1/docker/Bangumi && wget https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/Scrip/OneClickScrip.sh && chmod +x OneClickScrip.sh && ./OneClickScrip.sh
 ```
 
 1. 添加开机脚本，打开群晖`控制面板`>`任务计划`>`新增`>`触发的任务`>`用户自定义的脚本`：

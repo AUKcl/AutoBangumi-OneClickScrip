@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     volumes:
       - /volume1/docker/Bangumi/qBittorrent:/config #根据自己的目录修改
+      - /volume1/downloads/BT:/downloads #根据自己的目录修改
     ports:
       - "8989:8989"
     environment:

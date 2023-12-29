@@ -23,6 +23,7 @@
 mkdir -p /volume1/docker/Bangumi/Autobangumi/config
 mkdir -p /volume1/docker/Bangumi/Autobangumi/data
 mkdir -p /volume1/docker/Bangumi/qBittorrent
+mkdir -p /volume1/downloads/BT
 
 # 下载默认docker-compose.yaml模板
 wget https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/compose.yaml

@@ -25,13 +25,13 @@ mkdir -p /volume1/docker/Bangumi/Autobangumi/data
 mkdir -p /volume1/docker/Bangumi/qBittorrent
 
 # 下载默认docker-compose.yaml模板
-wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/compose.yaml
+wget https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/compose.yaml
 
 # 下载 AutoBangumi 项目启动脚本
-wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/Scrip/start_autobangumi.sh
+wget https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/Scrip/start_autobangumi.sh
 
 # 下载 AutoBangumi 项目更新脚本
-wget -P /volume1/docker/Bangumi https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/Scrip/update_autobangumi_containers.sh
+wget https://github.com/AUKcl/AutoBangumi-OneClickScrip/raw/main/Scrip/update_autobangumi_containers.sh
 
 # 执行 AutoBangumi 项目启动脚本
 bash /volume1/docker/Bangumi/start_autobangumi.sh

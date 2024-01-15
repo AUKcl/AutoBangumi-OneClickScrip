@@ -23,7 +23,7 @@
 COMPOSE_FILE="compose.yaml"
 
 echo "Step 1: 移除旧容器"
-# 停止容器
+# 移除旧容器
 docker-compose -f $COMPOSE_FILE down
 
 echo "Step 2: 拉取最新容器镜像"

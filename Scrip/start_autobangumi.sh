@@ -37,6 +37,36 @@ MAX_RETRIES=300
 # 定义重试间隔（秒）
 RETRY_INTERVAL=10
 
+# 检测 AutoBangumi 和 qbittorrent 是否已自启动的函数
+function manage_autobangumi_and_qbittorrent() {
+  if docker-compose -f $COMPOSE_FILE ps | grep -q $AUTOBANGUMI_CONTAINER || docker-compose -f $COMPOSE_FILE ps | grep -q $QB_CONTAINER; then
+    echo "AutoBangumi 或 qBittorrent 至少有一个已自启动，停止现有服务..."
+    
+    # 停止现有服务
+    docker-compose -f $COMPOSE_FILE stop
+    
+    echo "服务已停止，脚本将自动控制容器启动顺序..."
+  else
+    echo "AutoBangumi 和 qBittorrent 均未自启动，脚本将自动控制容器启动顺序..."
+  fi
+}
+
+# 启动 qbittorrent 服务的函数
+function start_qbittorrent() {
+  docker-compose -f $COMPOSE_FILE up -d --no-deps $QB_CONTAINER
+  if [ $? -ne 0 ]; then
+    # 提取qbittorrent容器ID
+    QB_CONTAINER_ID=$(docker ps -aqf "name=$QB_CONTAINER")
+    if [ -n "$QB_CONTAINER_ID" ]; then
+      echo "检测到已创建qbittorrent，使用容器ID $QB_CONTAINER_ID 启动..."
+      docker start $QB_CONTAINER_ID
+    else
+      echo "无法解决容器名冲突。请手动处理。"
+      exit 1
+    fi
+  fi
+}
+
 # 检测 qbittorrent 是否可访问的函数
 function is_qbittorrent_accessible() {
   curl --silent --fail $QB_URL > /dev/null
@@ -57,20 +87,29 @@ function wait_for_qbittorrent() {
   echo "qbittorrent 可访问。"
 }
 
+# 启动 AutoBangumi 服务的函数
+function start_autobangumi() {
+  docker-compose -f $COMPOSE_FILE up -d --no-deps $AUTOBANGUMI_CONTAINER
+  if [ $? -ne 0 ]; then
+    # 提取AutoBangumi容器ID
+    AUTOBANGUMI_CONTAINER_ID=$(docker ps -aqf "name=$AUTOBANGUMI_CONTAINER")
+    if [ -n "$AUTOBANGUMI_CONTAINER_ID" ]; then
+      echo "检测到已创建AutoBangumi，使用容器ID $AUTOBANGUMI_CONTAINER_ID 启动..."
+      docker start $AUTOBANGUMI_CONTAINER_ID
+    else
+      echo "无法解决容器名冲突。请手动处理。"
+      exit 1
+    fi
+  fi
+}
+
+# 检测 AutoBangumi 和 qbittorrent 是否已自启动，若启动，则停止容器
+echo "检测 AutoBangumi 和 qbittorrent 是否已自启动，若启动，则停止容器..."
+manage_autobangumi_and_qbittorrent
+
 # 启动 qbittorrent 服务
 echo "启动 qbittorrent 服务..."
-docker-compose -f $COMPOSE_FILE up -d --no-deps $QB_CONTAINER
-if [ $? -ne 0 ]; then
-  # 提取qbittorrent容器ID
-  QB_CONTAINER_ID=$(docker ps -aqf "name=$QB_CONTAINER")
-  if [ -n "$QB_CONTAINER_ID" ]; then
-    echo "检测到已创建qbittorrent，使用容器ID $QB_CONTAINER_ID 启动..."
-    docker start $QB_CONTAINER_ID
-  else
-    echo "无法解决容器名冲突。请手动处理。"
-    exit 1
-  fi
-fi
+start_qbittorrent
 
 # 检测 qbittorrent 可访问性
 echo "检测 qbittorrent 可访问性..."
@@ -78,17 +117,6 @@ wait_for_qbittorrent
 
 # 启动 AutoBangumi 服务
 echo "启动 AutoBangumi 服务..."
-docker-compose -f $COMPOSE_FILE up -d --no-deps $AUTOBANGUMI_CONTAINER
-if [ $? -ne 0 ]; then
-  # 提取AutoBangumi容器ID
-  AUTOBANGUMI_CONTAINER_ID=$(docker ps -aqf "name=$AUTOBANGUMI_CONTAINER")
-  if [ -n "$AUTOBANGUMI_CONTAINER_ID" ]; then
-    echo "检测到已创建AutoBangumi，使用容器ID $AUTOBANGUMI_CONTAINER_ID 启动..."
-    docker start $AUTOBANGUMI_CONTAINER_ID
-  else
-    echo "无法解决容器名冲突。请手动处理。"
-    exit 1
-  fi
-fi
+start_autobangumi
 
 echo "AutoBangumi 服务已启动。"

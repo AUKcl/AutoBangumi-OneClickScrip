@@ -18,10 +18,10 @@
 > 所以最好直接通过命令行来进行管理
 
 ## 群晖DSM7.1及以下版本
-### Docker套件及容器目录
+### 安装Docker套件
 群晖套件中心安装`Docker`套件
 
-### Docker Compose
+### 安装Docker Compose
 1. 打开群晖`控制面板`>`终端机和SNMP`，勾上`启动SSH功能`的勾，然后点击`应用`
 2. 使用SSH客户端连接群晖
 3. 使用`sudo -i`切换到root用户

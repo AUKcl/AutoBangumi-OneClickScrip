@@ -65,7 +65,7 @@ sudo mkdir -p /volume1/docker/Bangumi && cd /volume1/docker/Bangumi && wget http
 
 2. 用户自定义的脚本内容如下：
     ```bash
-    cd /volume1/docker/appdata/DockerCompose/Bangumi && ./update_autobangumi_containers.sh
+    cd /volume1/docker/Bangumi && ./update_autobangumi_containers.sh
     ```
 
 # End
